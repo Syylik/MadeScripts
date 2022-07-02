@@ -21,28 +21,35 @@ public class MovingObject : MonoBehaviour
 }
 
 [CustomEditor(typeof(MovingObject))]
+[CanEditMultipleObjects]
 public class MovingObjectEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        MovingObject movingObject = (MovingObject)target;
         EditorGUILayout.HelpBox("Made by Syylik, suck my cock!", MessageType.Warning);
-        movingObject.canMove = EditorGUILayout.Toggle("Может двигаться?", movingObject.canMove);
-        if(movingObject.canMove)
+        serializedObject.Update();
+        var canMove = serializedObject.FindProperty("canMove");
+        EditorGUILayout.PropertyField(canMove, new GUIContent("Может двигаться?"));
+        if(canMove.boolValue)
         {
-            movingObject.moveSpeed = EditorGUILayout.FloatField("Скорость", movingObject.moveSpeed);
-            movingObject.moveDirection = EditorGUILayout.Vector2Field("Направление", movingObject.moveDirection);
+            var moveSpeed = serializedObject.FindProperty("moveSpeed");
+            EditorGUILayout.PropertyField(moveSpeed, new GUIContent("Скорость"));
+            var moveDir = serializedObject.FindProperty("moveDirection");
+            EditorGUILayout.PropertyField(moveDir, new GUIContent("Направление"));
         }
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Самоуничтожится со временем?");
-        movingObject.canBeDestroyByTime = EditorGUILayout.Toggle(movingObject.canBeDestroyByTime);
+        var canBeDestroyByTime = serializedObject.FindProperty("canBeDestroyByTime");
         EditorGUILayout.EndHorizontal();
-        if(movingObject.canBeDestroyByTime)
+        EditorGUILayout.PropertyField(canBeDestroyByTime, new GUIContent("Уничтожится со временем?"));
+        EditorGUILayout.Space(10);
+        if(canBeDestroyByTime.boolValue)
         {
+            EditorGUILayout.Space(10);
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField("Время до самоуничтожения");
-            movingObject.timeToDestroy = EditorGUILayout.FloatField(movingObject.timeToDestroy);
+            var destroyTime = serializedObject.FindProperty("timeToDestroy");
+            EditorGUILayout.PropertyField(destroyTime, new GUIContent("Время до самоуничтожения"));
             EditorGUILayout.EndHorizontal();
         }
+        serializedObject.ApplyModifiedProperties();
     }
 }
