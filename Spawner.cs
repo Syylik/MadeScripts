@@ -50,7 +50,6 @@ public class SpawnerEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.HelpBox("Made by Syylik, suck my cock!", MessageType.Warning);
         serializedObject.Update();
 
         var canSpawn = serializedObject.FindProperty("canSpawn");

@@ -26,7 +26,6 @@ public class MovingObjectEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.HelpBox("Made by Syylik, suck my cock!", MessageType.Warning);
         serializedObject.Update();
         var canMove = serializedObject.FindProperty("canMove");
         EditorGUILayout.PropertyField(canMove, new GUIContent("Может двигаться?"));
